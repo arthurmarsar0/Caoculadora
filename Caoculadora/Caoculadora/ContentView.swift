@@ -7,35 +7,30 @@
 
 import SwiftUI
 
-enum Sizes: String, CaseIterable {
-    case small = "Pequeno"
-    case medium = "Medio"
-    case big = "Grande"
-}
 
 struct ContentView: View {
     
     @State var years: Int? = nil
     @State var months: Int? = nil
     @State var result: Int?
-    let portes = ["Pequeno", "Medio", "Grande"]
-//    @State var porte: String = "Pequeno"
-    @State var porte: Sizes = .small
+    @State var porteSelecionado: Porte = .pequeno
+    
     
     var body: some View {
         VStack(alignment: .leading) {
             Text("Qual idade do seu cão?")
-                .font(.system(size: 24))
-            Spacer()
+                .font(.header5)
             Text("Anos")
+                .font(.body1)
             TextField("Digite quantos anos tem o seu cão.", value: $years, format: .number)
             Text("Meses")
+                .font(.body1)
             TextField("Digite quantos meses tem o seu cão.", value: $months, format: .number)
             
             Text("Porte")
-            Picker("Porte", selection: $porte){
-                ForEach(Sizes.allCases, id: \.self) {porte in
-                    Text(porte.rawValue).tag(porte)
+            Picker("Porte", selection: $porteSelecionado){
+                ForEach(Porte.allCases, id: \.self) {porte in
+                    Text(porte.rawValue.capitalized).tag(porte)
                 }
             }
             .pickerStyle(.segmented)
@@ -45,7 +40,9 @@ struct ContentView: View {
             //segment controll
             if let result{
                 Text("Seu cachorro tem, em idade humana...")
+                    .font(.body1)
                 Text("\(result) anos")
+                    .font(.display)
             } else {
                 Image(ImageResource.clarinha)
                     .resizable()
@@ -60,6 +57,7 @@ struct ContentView: View {
                     Color.pink
                     Text("Calcular")
                         .foregroundStyle(.white)
+                        .font(.body1)
                 }
                 .cornerRadius(10)
             })
@@ -84,7 +82,10 @@ struct ContentView: View {
             return
         }
         
-        result = years * 7 + months * 7 / 12
+        result = porteSelecionado.conversaoIdade(
+            anos: years,
+            meses: months
+        )
     }
 }
 
