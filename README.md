@@ -1,3 +1,3 @@
 # Caoculadora
-Aplicativo da caoculadora
+Aplicativo desenvolvido durante as aulas de SwiftUI na Apple Developer Academy UFPE
 
